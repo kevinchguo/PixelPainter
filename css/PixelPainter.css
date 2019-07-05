@@ -1,0 +1,33 @@
+#pixlePainter {
+    display: flex;
+}
+
+#menuOptions {
+    border-bottom: 1px solid black;
+}
+
+#colorSelector {
+    display: inline-flex;
+    border-right: 1px solid black;
+    height: inherit;
+    width: inherit;
+    padding: 5px;
+}
+
+button:focus {
+    outline:0;
+}
+
+.hexColors {
+    border-radius: 10px;
+}
+
+#canvasGrid {
+    border: 1px solid black;
+}
+
+.gridColors {
+    border: 0px;
+    height: 15px;
+    width: 15px;
+}
