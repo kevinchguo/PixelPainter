@@ -1,7 +1,9 @@
 let paintFunctions = (function() {
     //try to save hexcode of color
-    const pickColor = function() {
+    let hexColor;
 
+    const saveColor = function() {
+        
     }
     
     //put this(color html)
@@ -22,7 +24,7 @@ let paintFunctions = (function() {
     }
     
     return {
-        pickColor: pickColor,
+        saveColor: saveColor,
         colorIn: colorIn,
         eraseColor: eraseColor,
         clearCanvas: clearCanvas,
