@@ -1,34 +1,129 @@
+button:focus {
+  outline: 0;
+}
+
 #pixlePainter {
-    display: flex;
+  display: flex;
 }
 
 #menuOptions {
-    border-bottom: 1px solid black;
+  border-bottom: 1px solid black;
 }
 
-#colorSelector {
-    display: inline-flex;
-    border-right: 1px solid black;
-    height: inherit;
-    width: inherit;
-    padding: 5px;
+#savedColors {
+  border: 1px dotted black;
+  height: auto;
+  width: auto;
+  margin: 5px 0px 5px 0px;
 }
 
-button:focus {
-    outline:0;
-}
-
-.hexColors {
-    border-radius: 10px;
+.newColors {
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  margin-right: 3px;
+  margin-bottom: 3px;
 }
 
 #canvasGrid {
-    border: 1px solid black;
-    width: fit-content;
+  border: 1px solid black;
+  width: fit-content;
 }
 
 .gridColors {
-    border: 0px;
-    height: 15px;
-    width: 15px;
+  border: 0px;
+  height: 15px;
+  width: 15px;
+  padding: 0px;
+}
+
+@media only screen and (max-width: 932px) {
+  .gridColors {
+    height: 14px !important;
+    width: 14px !important;
+  }
+}
+
+@media only screen and (max-width: 872px) {
+  .gridColors {
+    height: 13px !important;
+    width: 13px !important;
+  }
+}
+
+@media only screen and (max-width: 812px) {
+  .gridColors {
+    height: 12px !important;
+    width: 12px !important;
+  }
+}
+
+@media only screen and (max-width: 752px) {
+  .gridColors {
+    height: 11px !important;
+    width: 11px !important;
+  }
+}
+
+@media only screen and (max-width: 692px) {
+  .gridColors {
+    height: 10px !important;
+    width: 10px !important;
+  }
+}
+
+@media only screen and (max-width: 617px) {
+  .gridColors {
+    height: 9px !important;
+    width: 9px !important;
+  }
+}
+
+@media only screen and (max-width: 557px) {
+  .gridColors {
+    height: 8px !important;
+    width: 8px !important;
+  }
+}
+
+@media only screen and (max-width: 497px) {
+  .gridColors {
+    height: 7px !important;
+    width: 7px !important;
+  }
+}
+
+@media only screen and (max-width: 437px) {
+  .gridColors {
+    height: 6px !important;
+    width: 6px !important;
+  }
+}
+
+@media only screen and (max-width: 377px) {
+  .gridColors {
+    height: 5px !important;
+    width: 5px !important;
+  }
+}
+
+@media only screen and (max-width: 317px) {
+  .gridColors {
+    height: 4px !important;
+    width: 4px !important;
+  }
+}
+
+@media only screen and (max-width: 257px) {
+  .gridColors {
+    height: 3px !important;
+    width: 3px !important;
+  }
+}
+
+@media only screen and (max-width: 197px) {
+  .gridColors {
+    height: 2px !important;
+    width: 2px !important;
+  }
 }

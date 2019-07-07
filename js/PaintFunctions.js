@@ -1,35 +1,32 @@
 let paintFunctions = (function() {
-    //try to save hexcode of color
-    let hexColor;
+  //try to save hexcode of color
+  let rgbColor;
 
-    const saveColor = function() {
-        
+  let loadColor = function(str) {
+    rgbColor = str;
+    console.log(rgbColor);
+  };
+
+  //Colors in the canvas
+  let colorIn = function(elem) {
+    if (rgbColor) {
+      elem.style.backgroundColor = rgbColor;
     }
-    
-    //put this(color html)
-    const colorIn = function() {
+  };
 
-    }
+  let eraseColor = function() {};
 
-    const eraseColor = function() {
+  let clearCanvas = function() {
+    createCanvas();
+  };
 
-    }
+  let fillColor = function() {};
 
-    const clearCanvas = function() {
-
-    }
-
-    const fillColor = function() {
-
-    }
-    
-    return {
-        saveColor: saveColor,
-        colorIn: colorIn,
-        eraseColor: eraseColor,
-        clearCanvas: clearCanvas,
-        fillColor: fillColor,
-    }
-
-
+  return {
+    loadColor: loadColor,
+    colorIn: colorIn,
+    eraseColor: eraseColor,
+    clearCanvas: clearCanvas,
+    fillColor: fillColor
+  };
 })();
