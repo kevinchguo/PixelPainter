@@ -8,6 +8,7 @@ findPixelPainter.appendChild(menuOptions);
 let modifierButtons = {
   eraseColor: "erase",
   undoLast: "undo",
+  redoLast: "redo",
   clearCanvas: "clear",
   fillColor: "fill",
   saveCanvas: 'save <i class="fa fa-save">',
@@ -70,7 +71,6 @@ deleteNewColors.id = "deleteColors";
 deleteNewColors.innerHTML = "Delete colors";
 jsColorPrompt.appendChild(deleteNewColors);
 deleteNewColors.addEventListener("click", function() {
-  console.log(findNewColors);
   findNewColors[findNewColors.length - 1].remove();
 });
 
@@ -92,6 +92,7 @@ let makeCanvas = (function() {
       for (let gridColumns = 0; gridColumns < 60; gridColumns++) {
         let gridButton = document.createElement("button");
         gridButton.className = "gridColors";
+        gridButton.id = gridRows + ", " + gridColumns;
         canvasGrid.appendChild(gridButton);
         gridButton.style.backgroundColor = "#ffffff";
       }
@@ -107,12 +108,14 @@ let createCanvas = makeCanvas(); // this makes the canvas
 
 //Find all the boxes of canvas
 let findCanvas = document.getElementsByClassName("gridColors");
+paintFunctions.baseCanvas(); //saves a blank canvas
 
 //Add even listener to each boxes in canvas and color in
 let isDown = false;
 for (let x = 0; x < findCanvas.length; x++) {
   findCanvas[x].addEventListener("mousedown", function() {
     isDown = true;
+    paintFunctions.storeInObj(this.id, this.style.backgroundColor);
     if (pressErase) {
       paintFunctions.loadColor("#ffffff");
       paintFunctions.colorIn(this);
@@ -121,12 +124,9 @@ for (let x = 0; x < findCanvas.length; x++) {
     }
   });
 
-  findCanvas[x].addEventListener("mouseup", function() {
-    isDown = false;
-  });
-
   findCanvas[x].addEventListener("mouseover", function() {
     if (isDown) {
+      paintFunctions.storeInObj(this.id, this.style.backgroundColor);
       if (pressErase) {
         paintFunctions.loadColor("#ffffff");
         paintFunctions.colorIn(this);
@@ -134,6 +134,13 @@ for (let x = 0; x < findCanvas.length; x++) {
         paintFunctions.colorIn(this);
       }
     }
+  });
+
+  findCanvas[x].addEventListener("mouseup", function() {
+    isDown = false;
+    paintFunctions.loadPrevious();
+    paintFunctions.pushIntoCanvasObjHistory();
+    // paintFunctions.loadPrevious();
   });
 }
 
@@ -149,11 +156,16 @@ findModifiers[0].addEventListener("click", function() {
 });
 
 //undo button
-findModifiers[1].addEventListener("click", function() {});
+findModifiers[1].addEventListener("click", function() {
+  paintFunctions.undoLast();
+});
+
+//redo button
+findModifiers[2].addEventListener("click", function() {
+  paintFunctions.redoLast();
+});
 
 //clear button
-findModifiers[2].addEventListener("click", function() {
-  for (x = 0; x < findCanvas.length; x++) {
-    findCanvas[x].style.backgroundColor = "#ffffff";
-  }
+findModifiers[3].addEventListener("click", function() {
+  paintFunctions.clearAll();
 });
