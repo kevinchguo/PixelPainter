@@ -10,6 +10,15 @@ button:focus {
   border-bottom: 1px solid black;
 }
 
+.modifierButtons {
+  border-style: inset;
+}
+
+.modifierButtons:focus {
+  background-color: black;
+  color: white;
+}
+
 #savedColors {
   border: 1px dotted black;
   height: auto;
@@ -21,8 +30,11 @@ button:focus {
   height: 20px;
   width: 20px;
   border-radius: 50%;
-  margin-right: 3px;
-  margin-bottom: 3px;
+  margin: 3px;
+}
+
+.newColors:focus {
+  border: 3px solid black;
 }
 
 #canvasGrid {
@@ -31,10 +43,14 @@ button:focus {
 }
 
 .gridColors {
-  border: 0px;
+  border-style: outset;
   height: 15px;
   width: 15px;
   padding: 0px;
+}
+
+.gridColors:focus {
+  /* border: none; */
 }
 
 @media only screen and (max-width: 932px) {

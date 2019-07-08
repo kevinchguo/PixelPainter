@@ -7,9 +7,10 @@ findPixelPainter.appendChild(menuOptions);
 
 let modifierButtons = {
   eraseColor: "erase",
+  undoLast: "undo",
   clearCanvas: "clear",
   fillColor: "fill",
-  saveCanvas: "save",
+  saveCanvas: 'save <i class="fa fa-save">',
   shareCanvas: "share"
 };
 
@@ -29,19 +30,18 @@ findPixelPainter.appendChild(jsColor);
 //Choose color prompt
 let jsColorPrompt = document.createElement("div");
 jsColorPrompt.id = "prompt";
-jsColorPrompt.innerHTML = "Choose your color: ";
+jsColorPrompt.innerHTML = "Choose your color ";
 findPixelPainter.appendChild(jsColorPrompt);
 
 /*===============Save favorite colors==================*/
 
 //find color of the color picker box
 let selectColor = document.getElementsByClassName("jscolor");
-// selectColor[0].style.backgroundColor;
 
 //save button to save the color to use for later
 let findjsColorPrompt = document.getElementById("prompt");
 let saveColorButton = document.createElement("button");
-saveColorButton.innerHTML = "Save Color";
+saveColorButton.innerHTML = "Add colors";
 jsColorPrompt.appendChild(saveColorButton);
 
 //make a div box for saved colors
@@ -52,27 +52,35 @@ jsColorPrompt.appendChild(savedColorsBox);
 //save button function
 saveColorButton.addEventListener("click", function() {
   let createNewColor = document.createElement("button");
-  let hexColorCode = selectColor[0].style.backgroundColor;
-  createNewColor.id = hexColorCode;
+  let rgbColorCode = selectColor[0].style.backgroundColor;
+  createNewColor.id = rgbColorCode;
   createNewColor.className = "newColors";
-  createNewColor.style.backgroundColor = hexColorCode;
+  createNewColor.style.backgroundColor = rgbColorCode;
   savedColorsBox.appendChild(createNewColor);
-  createNewColor.addEventListener("mousedown", function() {
+  createNewColor.addEventListener("click", function() {
+    pressErase = false;
     paintFunctions.loadColor(this.style.backgroundColor);
-    // createNewColor.style.border = "2px solid black";
   });
 });
 
-//Current color box
-let currentColor = document.createElement("div");
-currentColor.id = "currentColor";
-currentColor.innerHTML = "Current color";
-jsColorPrompt.appendChild(currentColor);
-// savedColorsBox.style.backgroundColor =
+//delete most recent newColor
+let findNewColors = document.getElementsByClassName("newColors");
+let deleteNewColors = document.createElement("button");
+deleteNewColors.id = "deleteColors";
+deleteNewColors.innerHTML = "Delete colors";
+jsColorPrompt.appendChild(deleteNewColors);
+deleteNewColors.addEventListener("click", function() {
+  console.log(findNewColors);
+  findNewColors[findNewColors.length - 1].remove();
+});
 
-//find new color boxes and add load function so drawing works
+//Current coordinates
+let currentCoordinates = document.createElement("div");
+currentCoordinates.id = "currentCoordinates";
+currentCoordinates.innerHTML = "Coordinates: ";
+jsColorPrompt.appendChild(currentCoordinates);
 
-/*=================Create grid to color in==============*/
+/*=================Create grid==============*/
 
 let canvasGrid = document.createElement("div");
 canvasGrid.id = "canvasGrid";
@@ -85,11 +93,7 @@ let makeCanvas = (function() {
         let gridButton = document.createElement("button");
         gridButton.className = "gridColors";
         canvasGrid.appendChild(gridButton);
-        if ((gridColumns + gridRows) % 2 === 0) {
-          gridButton.style.backgroundColor = "#f2f2f2";
-        } else {
-          gridButton.style.backgroundColor = "#ffffff";
-        }
+        gridButton.style.backgroundColor = "#ffffff";
       }
       let breakGrid = document.createElement("BR");
       canvasGrid.appendChild(breakGrid);
@@ -97,27 +101,59 @@ let makeCanvas = (function() {
   };
 })();
 
-let createCanvas = makeCanvas();
+let createCanvas = makeCanvas(); // this makes the canvas
+
+/*=================Color in and erase functionality==============*/
 
 //Find all the boxes of canvas
 let findCanvas = document.getElementsByClassName("gridColors");
 
 //Add even listener to each boxes in canvas and color in
 let isDown = false;
-
-for (let y = 0; y < findCanvas.length; y++) {
-  findCanvas[y].addEventListener("mousedown", function() {
+for (let x = 0; x < findCanvas.length; x++) {
+  findCanvas[x].addEventListener("mousedown", function() {
     isDown = true;
-    paintFunctions.colorIn(this);
-  });
-
-  findCanvas[y].addEventListener("mouseup", function() {
-    isDown = false;
-  });
-
-  findCanvas[y].addEventListener("mouseover", function() {
-    if (isDown) {
+    if (pressErase) {
+      paintFunctions.loadColor("#ffffff");
+      paintFunctions.colorIn(this);
+    } else {
       paintFunctions.colorIn(this);
     }
   });
+
+  findCanvas[x].addEventListener("mouseup", function() {
+    isDown = false;
+  });
+
+  findCanvas[x].addEventListener("mouseover", function() {
+    if (isDown) {
+      if (pressErase) {
+        paintFunctions.loadColor("#ffffff");
+        paintFunctions.colorIn(this);
+      } else {
+        paintFunctions.colorIn(this);
+      }
+    }
+  });
 }
+
+/*===================Modifier buttons ========================*/
+
+//Find modifier buttons
+let findModifiers = document.getElementsByClassName("modifierButtons");
+
+//Erase button toggles on/off with the button(functionality built in the colorIn function)
+let pressErase = false;
+findModifiers[0].addEventListener("click", function() {
+  pressErase = true;
+});
+
+//undo button
+findModifiers[1].addEventListener("click", function() {});
+
+//clear button
+findModifiers[2].addEventListener("click", function() {
+  for (x = 0; x < findCanvas.length; x++) {
+    findCanvas[x].style.backgroundColor = "#ffffff";
+  }
+});
