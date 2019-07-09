@@ -2,19 +2,20 @@ let paintFunctions = (function() {
   //try to save hexcode of color
   let rgbColor;
   let canvasObjHistory = {};
-  let previousColorObj;
+  let previousColorArray = [];
   let undoHistoryArray = [];
   let redoHistoryArray = [];
   let objOfColors = {};
 
   let baseCanvas = function() {
+    let arry = [];
     for (let x = 0; x < findCanvas.length; x++) {
       let keysCoord = findCanvas[x].id;
       let valuesRGB = findCanvas[x].style.backgroundColor;
       canvasObjHistory[keysCoord] = valuesRGB;
+      arry.push(valuesRGB);
     }
-    undoHistoryArray.push(canvasObjHistory);
-    console.log(undoHistoryArray);
+    undoHistoryArray.push(arry);
   };
 
   let loadColor = function(str) {
@@ -29,20 +30,9 @@ let paintFunctions = (function() {
     }
   };
 
-  let loadPrevious = function() {
-    previousColorObj = undoHistoryArray;
-    console.log(previousColorObj);
-  };
-
   let undoLast = function() {
-    // for (let x = 0; x < findCanvas; x++) {
-    //   for (let y in previousColorObj) {
-    //     console.log(previousColorObj[y]);
-    //     findCanvas[x].style.backgroundColor = previousColorObj[y];
-    //   }
-    // }
     redoHistoryArray.push(undoHistoryArray.pop());
-    console.log(redoHistoryArray);
+    console.log(undoHistoryArray);
   };
 
   //   let redoLast = function() {
@@ -57,15 +47,26 @@ let paintFunctions = (function() {
 
   //creates an obj of the recent pushed buttons, and stores the previous combination to an array
   let pushIntoCanvasObjHistory = function() {
-    let obj = {};
-    for (let i in canvasObjHistory) {
-      obj[i] = canvasObjHistory[i];
-    }
+    let obj = canvasObjHistory;
+    let arry = [];
     for (let x in objOfColors) {
       obj[x] = objOfColors[x];
     }
-    undoHistoryArray.push(obj);
+    for (let y in obj) {
+      arry.push(obj[y]);
+    }
+    undoHistoryArray.push(arry);
     console.log(undoHistoryArray);
+  };
+
+  let pickLoadPreviousColors = function() {
+    previousColorArray = undoHistoryArray[undoHistoryArray.length - 2];
+    console.log(previousColorArray);
+  };
+
+  let loadPrevious = function() {
+    console.log(previousColorArray);
+    return previousColorArray;
   };
 
   let clearAll = function() {
@@ -80,11 +81,12 @@ let paintFunctions = (function() {
     baseCanvas: baseCanvas,
     loadColor: loadColor,
     colorIn: colorIn,
-    loadPrevious: loadPrevious,
     undoLast: undoLast,
     // redoLast: redoLast,
     storeInObj: storeInObj,
     pushIntoCanvasObjHistory: pushIntoCanvasObjHistory,
+    pickLoadPreviousColors: pickLoadPreviousColors,
+    loadPrevious: loadPrevious,
     clearAll: clearAll,
     fillColor: fillColor
   };

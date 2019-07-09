@@ -75,10 +75,12 @@ deleteNewColors.addEventListener("click", function() {
 });
 
 //Current coordinates
+let xySpan = document.createElement("span");
 let currentCoordinates = document.createElement("div");
 currentCoordinates.id = "currentCoordinates";
 currentCoordinates.innerHTML = "Coordinates: ";
 jsColorPrompt.appendChild(currentCoordinates);
+currentCoordinates.appendChild(xySpan);
 
 /*=================Create grid==============*/
 
@@ -92,7 +94,8 @@ let makeCanvas = (function() {
       for (let gridColumns = 0; gridColumns < 60; gridColumns++) {
         let gridButton = document.createElement("button");
         gridButton.className = "gridColors";
-        gridButton.id = gridRows + ", " + gridColumns;
+        gridButton.id =
+          "X: " + (gridColumns + 1) + ", " + "Y: " + (gridRows + 1);
         canvasGrid.appendChild(gridButton);
         gridButton.style.backgroundColor = "#ffffff";
       }
@@ -108,15 +111,14 @@ let createCanvas = makeCanvas(); // this makes the canvas
 
 //Find all the boxes of canvas
 let findCanvas = document.getElementsByClassName("gridColors");
-paintFunctions.baseCanvas(); //saves a blank canvas
+let createBaseCanvas = paintFunctions.baseCanvas(); //saves a blank canvas for undo func
 
 //Add even listener to each boxes in canvas and color in
 let isDown = false;
-let storedLoadPrevious;
 for (let x = 0; x < findCanvas.length; x++) {
   findCanvas[x].addEventListener("mousedown", function() {
     isDown = true;
-    paintFunctions.storeInObj(this.id, this.style.backgroundColor);
+    paintFunctions.storeInObj(this.id, this.style.backgroundColor); //stores all id and rgb colors
     if (pressErase) {
       paintFunctions.loadColor("#ffffff");
       paintFunctions.colorIn(this);
@@ -127,19 +129,22 @@ for (let x = 0; x < findCanvas.length; x++) {
 
   findCanvas[x].addEventListener("mouseover", function() {
     if (isDown) {
-      paintFunctions.storeInObj(this.id, this.style.backgroundColor);
+      paintFunctions.storeInObj(this.id, this.style.backgroundColor); //stores all id and rgb colors
       if (pressErase) {
         paintFunctions.loadColor("#ffffff");
         paintFunctions.colorIn(this);
       } else {
         paintFunctions.colorIn(this);
       }
+    } else {
+      xySpan.innerHTML = this.id;
     }
   });
 
   findCanvas[x].addEventListener("mouseup", function() {
     isDown = false;
     paintFunctions.pushIntoCanvasObjHistory();
+    paintFunctions.pickLoadPreviousColors();
   });
 }
 
@@ -156,11 +161,12 @@ findModifiers[0].addEventListener("click", function() {
 
 //undo button
 findModifiers[1].addEventListener("click", function() {
-  // let putLoadPrevious = Object.values(paintFunctions.loadPrevious());
-  // for (let x = 0; x < findCanvas.length; x++) {
-  //   findCanvas[x].style.backgroundColor = putLoadPrevious[x];
-  // }
-  paintFunctions.undoLast();
+  paintFunctions.pickLoadPreviousColors();
+  let loadPrevColors = paintFunctions.loadPrevious();
+  for (let x = 0; x < findCanvas.length; x++) {
+    findCanvas[x].style.backgroundColor = loadPrevColors[x];
+  }
+  console.log(paintFunctions.undoLast());
 });
 
 //redo button
