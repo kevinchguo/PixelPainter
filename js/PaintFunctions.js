@@ -30,17 +30,19 @@ let paintFunctions = (function() {
   };
 
   let loadPrevious = function() {
-    previousColorObj = undoHistoryArray[undoHistoryArray.length - 1];
+    previousColorObj = undoHistoryArray;
     console.log(previousColorObj);
   };
 
   let undoLast = function() {
-    for (let x = 0; x < findCanvas; x++) {
-      for (let y in previousColorObj) {
-        console.log(previousColorObj[y]);
-        findCanvas[x].style.backgroundColor = previousColorObj[y];
-      }
-    }
+    // for (let x = 0; x < findCanvas; x++) {
+    //   for (let y in previousColorObj) {
+    //     console.log(previousColorObj[y]);
+    //     findCanvas[x].style.backgroundColor = previousColorObj[y];
+    //   }
+    // }
+    redoHistoryArray.push(undoHistoryArray.pop());
+    console.log(redoHistoryArray);
   };
 
   //   let redoLast = function() {

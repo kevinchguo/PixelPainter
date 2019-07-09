@@ -112,6 +112,7 @@ paintFunctions.baseCanvas(); //saves a blank canvas
 
 //Add even listener to each boxes in canvas and color in
 let isDown = false;
+let storedLoadPrevious;
 for (let x = 0; x < findCanvas.length; x++) {
   findCanvas[x].addEventListener("mousedown", function() {
     isDown = true;
@@ -138,9 +139,7 @@ for (let x = 0; x < findCanvas.length; x++) {
 
   findCanvas[x].addEventListener("mouseup", function() {
     isDown = false;
-    paintFunctions.loadPrevious();
     paintFunctions.pushIntoCanvasObjHistory();
-    // paintFunctions.loadPrevious();
   });
 }
 
@@ -157,13 +156,15 @@ findModifiers[0].addEventListener("click", function() {
 
 //undo button
 findModifiers[1].addEventListener("click", function() {
+  // let putLoadPrevious = Object.values(paintFunctions.loadPrevious());
+  // for (let x = 0; x < findCanvas.length; x++) {
+  //   findCanvas[x].style.backgroundColor = putLoadPrevious[x];
+  // }
   paintFunctions.undoLast();
 });
 
 //redo button
-findModifiers[2].addEventListener("click", function() {
-  paintFunctions.redoLast();
-});
+findModifiers[2].addEventListener("click", function() {});
 
 //clear button
 findModifiers[3].addEventListener("click", function() {
