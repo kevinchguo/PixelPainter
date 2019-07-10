@@ -1,3 +1,10 @@
+let findHeader = document.getElementsByTagName("h1");
+setInterval(function() {
+  var randomColor = Math.floor(Math.random() * 16777215).toString(16);
+
+  findHeader[0].style.color = randomColor;
+}, 150);
+
 //find pixelPainter id and append a menu to it
 
 let findPixelPainter = document.getElementById("pixelPainter");
@@ -12,6 +19,7 @@ let modifierButtons = {
   clearCanvas: "clear",
   fillColor: "fill",
   saveCanvas: 'save <i class="fa fa-save">',
+  loadCanvas: "load",
   shareCanvas: "share"
 };
 
@@ -24,14 +32,16 @@ Object.keys(modifierButtons).forEach(function(btns) {
 });
 
 //append color.js file into html
+let jsColorDiv = document.createElement("div");
+jsColorDiv.id = "colorSelector";
+findPixelPainter.appendChild(jsColorDiv);
 let jsColor = document.createElement("input");
 jsColor.className = "jscolor";
-findPixelPainter.appendChild(jsColor);
+jsColorDiv.appendChild(jsColor);
 
 //Choose color prompt
 let jsColorPrompt = document.createElement("div");
 jsColorPrompt.id = "prompt";
-jsColorPrompt.innerHTML = "Choose your color ";
 findPixelPainter.appendChild(jsColorPrompt);
 
 /*===============Save favorite colors==================*/
@@ -42,8 +52,19 @@ let selectColor = document.getElementsByClassName("jscolor");
 //save button to save the color to use for later
 let findjsColorPrompt = document.getElementById("prompt");
 let saveColorButton = document.createElement("button");
-saveColorButton.innerHTML = "Add colors";
+saveColorButton.className = "add_delete";
+saveColorButton.innerHTML = "Add";
 jsColorPrompt.appendChild(saveColorButton);
+
+//delete most recent newColor
+let findNewColors = document.getElementsByClassName("newColors");
+let deleteNewColors = document.createElement("button");
+deleteNewColors.className = "add_delete";
+deleteNewColors.innerHTML = "Delete";
+jsColorPrompt.appendChild(deleteNewColors);
+deleteNewColors.addEventListener("click", function() {
+  findNewColors[findNewColors.length - 1].remove();
+});
 
 //make a div box for saved colors
 let savedColorsBox = document.createElement("div");
@@ -64,22 +85,13 @@ saveColorButton.addEventListener("click", function() {
   });
 });
 
-//delete most recent newColor
-let findNewColors = document.getElementsByClassName("newColors");
-let deleteNewColors = document.createElement("button");
-deleteNewColors.id = "deleteColors";
-deleteNewColors.innerHTML = "Delete colors";
-jsColorPrompt.appendChild(deleteNewColors);
-deleteNewColors.addEventListener("click", function() {
-  findNewColors[findNewColors.length - 1].remove();
-});
-
 //Current coordinates
 let xySpan = document.createElement("span");
 let currentCoordinates = document.createElement("div");
 currentCoordinates.id = "currentCoordinates";
 currentCoordinates.innerHTML = "Coordinates: ";
 jsColorPrompt.appendChild(currentCoordinates);
+xySpan.id = "xyCoord";
 currentCoordinates.appendChild(xySpan);
 
 /*=================Create grid==============*/
@@ -92,14 +104,14 @@ let makeCanvas = (function() {
   return function() {
     for (let gridRows = 0; gridRows < 60; gridRows++) {
       for (let gridColumns = 0; gridColumns < 60; gridColumns++) {
-        let gridButton = document.createElement("button");
+        let gridButton = document.createElement("div");
         gridButton.className = "gridColors";
         gridButton.id =
           "X: " + (gridColumns + 1) + ", " + "Y: " + (gridRows + 1);
         canvasGrid.appendChild(gridButton);
         gridButton.style.backgroundColor = "#ffffff";
       }
-      let breakGrid = document.createElement("BR");
+      let breakGrid = document.createElement("br");
       canvasGrid.appendChild(breakGrid);
     }
   };
@@ -144,7 +156,7 @@ for (let x = 0; x < findCanvas.length; x++) {
   findCanvas[x].addEventListener("mouseup", function() {
     isDown = false;
     paintFunctions.pushIntoCanvasObjHistory();
-    paintFunctions.pickLoadPreviousColors();
+    paintFunctions.loadPreviousUndo();
   });
 }
 
@@ -161,16 +173,23 @@ findModifiers[0].addEventListener("click", function() {
 
 //undo button
 findModifiers[1].addEventListener("click", function() {
-  paintFunctions.pickLoadPreviousColors();
-  let loadPrevColors = paintFunctions.loadPrevious();
+  paintFunctions.loadPreviousUndo();
+  let loadUndoColors = paintFunctions.loadUndo();
   for (let x = 0; x < findCanvas.length; x++) {
-    findCanvas[x].style.backgroundColor = loadPrevColors[x];
+    findCanvas[x].style.backgroundColor = loadUndoColors[x];
   }
-  console.log(paintFunctions.undoLast());
+  paintFunctions.undoLast();
 });
 
 //redo button
-findModifiers[2].addEventListener("click", function() {});
+findModifiers[2].addEventListener("click", function() {
+  paintFunctions.loadPreviousRedo();
+  let loadRedoColors = paintFunctions.loadRedo();
+  for (let x = 0; x < findCanvas.length; x++) {
+    findCanvas[x].style.backgroundColor = loadRedoColors[x];
+  }
+  paintFunctions.redoLast();
+});
 
 //clear button
 findModifiers[3].addEventListener("click", function() {

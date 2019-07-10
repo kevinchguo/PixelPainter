@@ -3,9 +3,12 @@ let paintFunctions = (function() {
   let rgbColor;
   let canvasObjHistory = {};
   let previousColorArray = [];
+  let nextColorArray = [];
   let undoHistoryArray = [];
   let redoHistoryArray = [];
   let objOfColors = {};
+  let savedCanvas = [];
+  let savedObj = {};
 
   let baseCanvas = function() {
     let arry = [];
@@ -32,17 +35,17 @@ let paintFunctions = (function() {
 
   let undoLast = function() {
     redoHistoryArray.push(undoHistoryArray.pop());
-    console.log(undoHistoryArray);
+    // console.log(undoHistoryArray);
   };
 
-  //   let redoLast = function() {
-  //     redoHistoryArray.push(undoHistoryArray.pop());
-  //     console.log(redoHistoryArray);
-  //   };
+  let redoLast = function() {
+    undoHistoryArray.push(redoHistoryArray.shift());
+  };
 
   let storeInObj = function(xy_id) {
     //stores the recent color and id of the box of canvas
     objOfColors[xy_id] = rgbColor;
+    console.log(objOfColors);
   };
 
   //creates an obj of the recent pushed buttons, and stores the previous combination to an array
@@ -56,16 +59,24 @@ let paintFunctions = (function() {
       arry.push(obj[y]);
     }
     undoHistoryArray.push(arry);
-    console.log(undoHistoryArray);
+    // console.log(undoHistoryArray);
   };
 
-  let pickLoadPreviousColors = function() {
+  let loadPreviousUndo = function() {
     previousColorArray = undoHistoryArray[undoHistoryArray.length - 2];
-    console.log(previousColorArray);
+    // console.log(previousColorArray);
   };
 
-  let loadPrevious = function() {
-    console.log(previousColorArray);
+  let loadPreviousRedo = function() {
+    nextColorArray = redoHistoryArray[0];
+  };
+
+  let loadRedo = function() {
+    return nextColorArray;
+  };
+
+  let loadUndo = function() {
+    // console.log(previousColorArray);
     return previousColorArray;
   };
 
@@ -75,6 +86,10 @@ let paintFunctions = (function() {
     }
   };
 
+  let saveCanvas = function() {};
+
+  let loadCanvas = function() {};
+
   let fillColor = function() {};
 
   return {
@@ -82,12 +97,16 @@ let paintFunctions = (function() {
     loadColor: loadColor,
     colorIn: colorIn,
     undoLast: undoLast,
-    // redoLast: redoLast,
+    redoLast: redoLast,
     storeInObj: storeInObj,
     pushIntoCanvasObjHistory: pushIntoCanvasObjHistory,
-    pickLoadPreviousColors: pickLoadPreviousColors,
-    loadPrevious: loadPrevious,
+    loadPreviousUndo: loadPreviousUndo,
+    loadPreviousRedo: loadPreviousRedo,
+    loadUndo: loadUndo,
+    loadRedo: loadRedo,
     clearAll: clearAll,
+    saveCanvas: saveCanvas,
+    loadCanvas: loadCanvas,
     fillColor: fillColor
   };
 })();
