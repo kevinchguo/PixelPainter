@@ -72,6 +72,7 @@ let paintFunctions = (function() {
 
   let loadPreviousRedo = function() {
     nextColorArray = redoHistoryArray[0];
+    return nextColorArray;
   };
 
   let loadRedo = function() {
@@ -84,8 +85,8 @@ let paintFunctions = (function() {
     }
   };
 
-  let saveCanvas = function() {
-    let savedCanvas = undoHistoryArray[undoHistoryArray.length - 1];
+  let saveCanvas = function(xy_id, rgb) {
+    let savedCanvas = [];
   };
 
   let loadCanvas = function() {

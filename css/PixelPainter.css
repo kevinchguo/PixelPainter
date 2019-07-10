@@ -1,3 +1,6 @@
+body {
+  background-color: #9595cc;
+}
 html {
   font-family: "Hi Melody", cursive;
 }
@@ -11,7 +14,7 @@ button:focus {
 }
 
 h1 {
-  font-family: "Hi Melody", cursive;
+  font-family: "Press Start 2P", cursive;
   font-size: 40pt;
   text-align: center;
 }
@@ -55,7 +58,8 @@ h1 {
   border-radius: 8px;
   margin-top: 5px;
   margin-bottom: 5px;
-  font-family: "Nanum Pen Script", cursive;
+  width: 300px;
+  font-family: "Press Start 2P", cursive;
   font-size: 18pt;
   transition: 0.3s;
   outline: 0;
@@ -111,8 +115,12 @@ h1 {
 }
 
 #currentCoordinates {
-  background-color: #00ccff;
+  background-color: #6b55c1;
+  color: #cbcbcd;
   width: fit-content;
+  font-family: "Press Start 2P", cursive;
+
+  font-size: 16pt;
   padding: 5px;
   border-top-right-radius: 8px;
   border-top-left-radius: 8px;
@@ -120,7 +128,10 @@ h1 {
 
 #xyCoord {
   background-color: aliceblue;
+  color: black;
   width: fit-content;
+  font-family: "Press Start 2P", cursive;
+  font-size: 12pt;
   border-radius: 8px;
   padding: 2px;
 }

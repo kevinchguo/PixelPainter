@@ -1,5 +1,5 @@
 document.body.style.backgroundImage = "url(../assets/snes.jpg)";
-
+document.body.style.backgroundRepeat = "no-repeat";
 let findHeader = document.getElementsByTagName("h1");
 findHeader[0].style.transition = "0.5s"; //Smooth transition between colors
 setInterval(function() {
@@ -123,8 +123,8 @@ findPixelPainter.appendChild(canvasGrid);
 
 let makeCanvas = (function() {
   return function() {
-    for (let gridRows = 0; gridRows < 60; gridRows++) {
-      for (let gridColumns = 0; gridColumns < 60; gridColumns++) {
+    for (let gridRows = 0; gridRows < 50; gridRows++) {
+      for (let gridColumns = 0; gridColumns < 50; gridColumns++) {
         let gridButton = document.createElement("div");
         gridButton.className = "gridColors";
         gridButton.id =
@@ -205,8 +205,7 @@ findModifiers[1].addEventListener("click", function() {
 
 //redo button
 findModifiers[2].addEventListener("click", function() {
-  paintFunctions.loadPreviousRedo();
-  let loadRedoColors = paintFunctions.loadRedo();
+  let loadRedoColors = paintFunctions.loadPreviousRedo();
   for (let x = 0; x < findCanvas.length; x++) {
     findCanvas[x].style.backgroundColor = loadRedoColors[x];
   }
@@ -223,7 +222,8 @@ findModifiers[4];
 
 //save button
 findModifiers[5].addEventListener("click", function() {
-  paintFunctions.saveCanvas();
+  let savePicture = paintFunctions.saveCanvas();
+  savePicture();
 });
 
 //load button
