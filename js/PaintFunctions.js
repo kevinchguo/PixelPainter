@@ -45,7 +45,6 @@ let paintFunctions = (function() {
   let storeInObj = function(xy_id) {
     //stores the recent color and id of the box of canvas
     objOfColors[xy_id] = rgbColor;
-    console.log(objOfColors);
   };
 
   //creates an obj of the recent pushed buttons, and stores the previous combination to an array
@@ -67,6 +66,10 @@ let paintFunctions = (function() {
     // console.log(previousColorArray);
   };
 
+  let loadUndo = function() {
+    return previousColorArray;
+  };
+
   let loadPreviousRedo = function() {
     nextColorArray = redoHistoryArray[0];
   };
@@ -75,20 +78,19 @@ let paintFunctions = (function() {
     return nextColorArray;
   };
 
-  let loadUndo = function() {
-    // console.log(previousColorArray);
-    return previousColorArray;
-  };
-
   let clearAll = function() {
     for (x = 0; x < findCanvas.length; x++) {
       findCanvas[x].style.backgroundColor = "#ffffff";
     }
   };
 
-  let saveCanvas = function() {};
+  let saveCanvas = function() {
+    let savedCanvas = undoHistoryArray[undoHistoryArray.length - 1];
+  };
 
-  let loadCanvas = function() {};
+  let loadCanvas = function() {
+    return savedCanvas;
+  };
 
   let fillColor = function() {};
 

@@ -1,9 +1,12 @@
+document.body.style.backgroundImage = "url(../assets/snes.jpg)";
+
 let findHeader = document.getElementsByTagName("h1");
+findHeader[0].style.transition = "0.5s"; //Smooth transition between colors
 setInterval(function() {
   var randomColor = Math.floor(Math.random() * 16777215).toString(16);
 
   findHeader[0].style.color = randomColor;
-}, 150);
+}, 300);
 
 //find pixelPainter id and append a menu to it
 
@@ -20,7 +23,7 @@ let modifierButtons = {
   fillColor: "fill",
   saveCanvas: 'save <i class="fa fa-save">',
   loadCanvas: "load",
-  shareCanvas: "share"
+  shareCanvas: "link"
 };
 
 //make values in obj into buttons
@@ -85,6 +88,23 @@ saveColorButton.addEventListener("click", function() {
   });
 });
 
+//Closes box and adds color with keypress enter
+// let findjscolorActive = getElementsByClassName("jscolor jscolor-active");
+selectColor[0].addEventListener("keyup", function(event) {
+  if (event.keyCode === 13) {
+    let createNewColor = document.createElement("button");
+    let rgbColorCode = selectColor[0].style.backgroundColor;
+    createNewColor.id = rgbColorCode;
+    createNewColor.className = "newColors";
+    createNewColor.style.backgroundColor = rgbColorCode;
+    savedColorsBox.appendChild(createNewColor);
+    createNewColor.addEventListener("click", function() {
+      pressErase = false;
+      paintFunctions.loadColor(this.style.backgroundColor);
+    });
+  }
+});
+
 //Current coordinates
 let xySpan = document.createElement("span");
 let currentCoordinates = document.createElement("div");
@@ -93,6 +113,7 @@ currentCoordinates.innerHTML = "Coordinates: ";
 jsColorPrompt.appendChild(currentCoordinates);
 xySpan.id = "xyCoord";
 currentCoordinates.appendChild(xySpan);
+xySpan.style.display = "none"; //Hide span so it doesn't make space under coordinates div
 
 /*=================Create grid==============*/
 
@@ -150,6 +171,7 @@ for (let x = 0; x < findCanvas.length; x++) {
       }
     } else {
       xySpan.innerHTML = this.id;
+      xySpan.style.display = "inline-block";
     }
   });
 
@@ -194,4 +216,33 @@ findModifiers[2].addEventListener("click", function() {
 //clear button
 findModifiers[3].addEventListener("click", function() {
   paintFunctions.clearAll();
+});
+
+//fill button
+findModifiers[4];
+
+//save button
+findModifiers[5].addEventListener("click", function() {
+  paintFunctions.saveCanvas();
+});
+
+//load button
+findModifiers[6].addEventListener("click", function() {
+  let loadCanvas = paintFunctions.loadCanvas();
+  for (let x = 0; x < findCanvas.length; x++) {
+    findCanvas[x].style.backgroundColor = loadCanvas[x];
+  }
+});
+
+//link
+let createlink = makeLink.returnLink();
+findModifiers[7].addEventListener("click", function() {
+  for (let colors in createlink) {
+    console.log(colors);
+    console.log(createlink[colors].length);
+    for (let coord = 0; coord < createlink[colors].length; coord++) {
+      let findIds = document.getElementById(createlink[colors][coord]);
+      findIds.style.backgroundColor = colors;
+    }
+  }
 });
