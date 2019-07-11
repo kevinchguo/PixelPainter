@@ -35,7 +35,6 @@ let paintFunctions = (function() {
 
   let undoLast = function() {
     redoHistoryArray.push(undoHistoryArray.pop());
-    // console.log(undoHistoryArray);
   };
 
   let redoLast = function() {
@@ -58,12 +57,10 @@ let paintFunctions = (function() {
       arry.push(obj[y]);
     }
     undoHistoryArray.push(arry);
-    // console.log(undoHistoryArray);
   };
 
   let loadPreviousUndo = function() {
     previousColorArray = undoHistoryArray[undoHistoryArray.length - 2];
-    // console.log(previousColorArray);
   };
 
   let loadUndo = function() {

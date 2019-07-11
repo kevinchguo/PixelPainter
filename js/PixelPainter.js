@@ -238,8 +238,6 @@ findModifiers[6].addEventListener("click", function() {
 let createlink = makeLink.returnLink();
 findModifiers[7].addEventListener("click", function() {
   for (let colors in createlink) {
-    console.log(colors);
-    console.log(createlink[colors].length);
     for (let coord = 0; coord < createlink[colors].length; coord++) {
       let findIds = document.getElementById(createlink[colors][coord]);
       findIds.style.backgroundColor = colors;
